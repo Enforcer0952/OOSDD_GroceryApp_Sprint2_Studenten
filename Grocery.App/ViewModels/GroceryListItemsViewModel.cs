@@ -72,20 +72,15 @@ namespace Grocery.App.ViewModels
         public void AddProduct(Product product)
         {
             if (product == null || product.Id <= 0)
-                throw new ArgumentException("Product must exist and have an Id greater than 0");
-
-            if (MyGroceryListItems.Any(item => item.ProductId == product.Id))
                 return;
 
-            var newItem = new GroceryListItem(0, GroceryList.Id, product.Id, 1);
+            GroceryListItem newItem = new GroceryListItem(0, GroceryList.Id, product.Id, 1);
 
             _groceryListItemsService.Add(newItem);
 
-            product.Stock--;
+            product.Stock -= 1;
             _productService.Update(product);
-
             AvailableProducts.Remove(product);
-
             OnGroceryListChanged(GroceryList);
         }
     }
